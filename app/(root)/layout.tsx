@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from '../components/shared/navbar/Navbar';
 import { ThemeProvider } from '@/context/ThemeProvider';
+import LeftSidebar from '../components/shared/LeftSidebar';
+import RightSidebar from '../components/shared/RightSidebar';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -8,11 +10,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="background-light850_dark100 relative">
         <Navbar />
         <div className="flex">
-          leftsidebar
+          <LeftSidebar />
           <section className="flex min-h-screen flex-1 flex-col px-6 pb-14 pt-36 max-md:pb-14 sm:px-14">
             <div className="mx-auto w-full max-w-5xl">{children}</div>
           </section>
-          leftsidebar
+          <RightSidebar />
         </div>
         Toaster
       </main>
