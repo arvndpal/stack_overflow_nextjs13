@@ -10,6 +10,7 @@ export default authMiddleware({
     '/question/:id',
     '/tags',
     '/tags/:id',
+    '/profile',
     '/profile/:id',
     '/community',
     '/jobs',
