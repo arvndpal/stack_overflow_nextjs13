@@ -7,7 +7,7 @@ const nextConfig = {
     },
     reactStrictMode: true,
     images: {
-        domains: ["gravatar.com"],
+        domains: ["gravatar.com", "img.clerk.com"],
         disableStaticImages: true,
     },
 }
