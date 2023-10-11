@@ -11,7 +11,6 @@ const Page = async () => {
   }
 
   const mongoUser = await getUserById({ userId });
-  console.log('uaerid', mongoUser);
   return (
     <div>
       <h1 h1-bold text-dark100_light900>
