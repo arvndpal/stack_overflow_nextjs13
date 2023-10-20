@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { createAnswer } from '@/lib/actions/answer.action';
 import { usePathname } from 'next/navigation';
-
 interface Props {
   question: string;
   questionId: string;
@@ -72,7 +71,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                 height={12}
                 className="object-contain"
               />
-              Generate AI Answer
+              Generate AI Answer1
             </>
           )}
         </Button>
@@ -88,44 +87,88 @@ const Answer = ({ question, questionId, authorId }: Props) => {
             render={({ field }) => (
               <FormItem className="flex w-full flex-col gap-3">
                 <FormControl className="mt-3.5">
-                  <Editor
-                    apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}
-                    onInit={(evt, editor) => {
-                      // @ts-ignore
-                      editorRef.current = editor;
-                    }}
-                    onBlur={field.onBlur}
-                    onEditorChange={(content) => field.onChange(content)}
-                    init={{
-                      height: 500,
-                      menubar: false,
-                      plugins: [
-                        'advlist',
-                        'autolink',
-                        'lists',
-                        'link',
-                        'image',
-                        'charmap',
-                        'preview',
-                        'anchor',
-                        'searchreplace',
-                        'visualblocks',
-                        'codesample',
-                        'fullscreen',
-                        'insertdatetime',
-                        'media',
-                        'table',
-                      ],
-                      toolbar:
-                        'undo redo  | ' +
-                        'codesample | bold italic forecolor | alignleft aligncenter | ' +
-                        'alignright alignjustify | bullist numlist outdent indent | ',
-                      content_style:
-                        'body { font-family:Inter ; font-size:16px }',
-                      skin: mode === 'dark' ? 'oxide-dark' : 'oxide',
-                      content_css: mode === 'dark' ? 'dark' : 'light',
-                    }}
-                  />
+                  <>
+                    {mode === 'dark' && (
+                      <Editor
+                        apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}
+                        onInit={(evt, editor) => {
+                          // @ts-ignore
+                          editorRef.current = editor;
+                        }}
+                        onBlur={field.onBlur}
+                        onEditorChange={(content) => field.onChange(content)}
+                        init={{
+                          height: 500,
+                          menubar: false,
+                          plugins: [
+                            'advlist',
+                            'autolink',
+                            'lists',
+                            'link',
+                            'image',
+                            'charmap',
+                            'preview',
+                            'anchor',
+                            'searchreplace',
+                            'visualblocks',
+                            'codesample',
+                            'fullscreen',
+                            'insertdatetime',
+                            'media',
+                            'table',
+                          ],
+                          toolbar:
+                            'undo redo  | ' +
+                            'codesample | bold italic forecolor | alignleft aligncenter | ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ',
+                          content_style:
+                            'body { font-family:Inter ; font-size:16px }',
+                          skin: 'oxide-dark',
+                          content_css: 'dark',
+                        }}
+                      />
+                    )}
+                    {mode === 'light' && (
+                      <Editor
+                        apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}
+                        onInit={(evt, editor) => {
+                          // @ts-ignore
+                          editorRef.current = editor;
+                        }}
+                        onBlur={field.onBlur}
+                        onEditorChange={(content) => field.onChange(content)}
+                        init={{
+                          height: 500,
+                          menubar: false,
+                          plugins: [
+                            'advlist',
+                            'autolink',
+                            'lists',
+                            'link',
+                            'image',
+                            'charmap',
+                            'preview',
+                            'anchor',
+                            'searchreplace',
+                            'visualblocks',
+                            'codesample',
+                            'fullscreen',
+                            'insertdatetime',
+                            'media',
+                            'table',
+                          ],
+                          toolbar:
+                            'undo redo  | ' +
+                            'codesample | bold italic forecolor | alignleft aligncenter | ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ',
+                          content_style:
+                            'body { font-family:Inter ; font-size:16px }',
+                          skin: 'oxide',
+                          content_css: 'light',
+                        }}
+                      />
+                    )}
+                  </>
                 </FormControl>
                 <div className="flex justify-end">
                   <Button
