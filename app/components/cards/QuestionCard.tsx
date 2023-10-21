@@ -7,7 +7,7 @@ import { SignedIn } from '@clerk/nextjs';
 import EditDeleteAction from '../shared/EditDeleteAction';
 interface QuestionProps {
   _id: string;
-  clerkId: string | null | undefined;
+  clerkId?: string | null | undefined;
   title: string;
   tags: { _id: string; name: string }[];
   author: {
