@@ -48,10 +48,40 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       setIsSubmitting(false);
     }
   };
-  const generateAIAnswer = () => {};
+
+  const generateAIAnswer = async () => {
+    if (!authorId) return;
+
+    setIsSubmittingAI(true);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ question }),
+        }
+      );
+
+      const aiAnswer = await response.json();
+
+      // Convert plain text to HTML format
+      console.log('jdghj', aiAnswer);
+      const formattedAnswer = aiAnswer.reply;
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAnswer);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmittingAI(false);
+    }
+  };
   return (
     <div className="">
-      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+      <div className="mt-3 flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <h4 className="paragraph-semibold text-dark400_light800">
           Write your answer here
         </h4>
@@ -71,7 +101,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                 height={12}
                 className="object-contain"
               />
-              Generate AI Answer1
+              Generate AI Answer
             </>
           )}
         </Button>
