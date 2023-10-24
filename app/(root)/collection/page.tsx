@@ -2,6 +2,7 @@ import QuestionCard from '@/app/components/cards/QuestionCard';
 
 import Filter from '@/app/components/shared/Filter';
 import NoResult from '@/app/components/shared/NoResultFound';
+import Pagination from '@/app/components/shared/Pagination';
 import LocalSearchbar from '@/app/components/shared/search/LocalSearchbar';
 import { QuestionFilters } from '@/constants/filters';
 import { getSavedQuestions } from '@/lib/actions/user.action';
@@ -48,7 +49,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
               title={question.title}
               tags={question.tags}
               author={question.author}
-              upvotes={question.upvotes}
+              upvotes={question.upvotes.length}
               views={question.views}
               answers={question.answers}
               createdAt={question.createdAt}
@@ -64,7 +65,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         )}
       </div>
 
-      <div className="mt-10"></div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
+      </div>
     </>
   );
 }

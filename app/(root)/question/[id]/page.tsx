@@ -11,17 +11,22 @@ import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import AllAnswers from '@/app/components/shared/AllAnswers';
 import Votes from '@/app/components/shared/Votes';
-const Page = async ({ params }: any) => {
-  const result = await getQuestionById({ questionId: params.id });
-  const { userId } = auth();
+
+const Page = async ({ params, searchParams }: any) => {
+  const { userId: clerkId } = auth();
+
   let mongoUser;
-  if (userId) {
-    mongoUser = await getUserById({ userId });
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
   }
+
+  const result = await getQuestionById({ questionId: params.id });
+
   return (
     <>
       <div className="flex-start w-full flex-col">
-        <div className="flex w-full flex-col-reverse justify-between">
+        <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
             href={`/profile/${result.author.clerkId}`}
             className="flex items-center justify-start gap-1"
@@ -94,6 +99,8 @@ const Page = async ({ params }: any) => {
         questionId={result._id}
         userId={mongoUser._id}
         totalAnswers={result.answers.length}
+        page={searchParams?.page}
+        filter={searchParams?.filter}
       />
       <Answer
         question={result.content}

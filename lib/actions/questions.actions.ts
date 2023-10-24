@@ -22,20 +22,40 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter, page = 1, pageSize = 2 } = params;
     const query: FilterQuery<typeof Question> = {};
+    const skipAmount = (page - 1) * pageSize;
     if (searchQuery) {
       query.$or = [
         { title: { $regex: new RegExp(searchQuery, 'i') } },
         { content: { $regex: new RegExp(searchQuery, 'i') } },
       ];
     }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case 'newest':
+        sortOptions = { createdAt: -1 };
+        break;
+      case 'frequent':
+        sortOptions = { views: -1 };
+        break;
+      case 'unanswered':
+        query.answers = { $size: 0 };
+        break;
+      default:
+        break;
+    }
     const questions = await Question.find(query)
       .populate({ path: 'tags', model: Tag })
       .populate({ path: 'author', model: User })
-      .sort({ createdAt: -1 });
-
-    return { questions };
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort(sortOptions);
+    const totalQuestions = await Question.find(query);
+    const isNext = totalQuestions.length > skipAmount + questions.length;
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;
