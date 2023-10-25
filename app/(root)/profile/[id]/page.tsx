@@ -11,7 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Stats from '@/app/components/shared/Stats';
 import QuestionTab from '@/app/components/shared/QuestionTab';
 import AnswersTab from '@/app/components/shared/AnswersTab';
-
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Profile | Dev Overflow',
+};
 const Page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
   const userInfo = await getUserInfo({ userId: params.id });

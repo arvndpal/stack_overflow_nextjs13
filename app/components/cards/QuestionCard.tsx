@@ -14,6 +14,7 @@ interface QuestionProps {
     _id: string;
     name: string;
     picture: string;
+    clerkId: string;
   };
   upvotes: number;
   views: number;
@@ -33,7 +34,7 @@ const QuestionCard = ({
 }: QuestionProps) => {
   const showActionButton = clerkId === author.clerkId;
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11 ">
+    <div className="card-wrapper rounded-[10px] p-9 hover:shadow-lg sm:px-11 ">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span
@@ -67,30 +68,32 @@ const QuestionCard = ({
           value={author.name}
           title={` - asked ${getTimestamp(createdAt)}`}
           textStyles="body-medium text-dark400_light800 "
-          href={`/profile/${author._id}`}
+          href={`/profile/${author.clerkId}`}
           isAuthor={true}
         />{' '}
-        <Metric
-          imgUrl="/assets/icons/like.svg"
-          alt="upvotes"
-          value={formatAndDivideNumber(upvotes)}
-          title=" Votes"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/message.svg"
-          alt="message"
-          value={formatAndDivideNumber(answers.length)}
-          title=" Answers"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          alt="eye"
-          value={formatAndDivideNumber(views)}
-          title=" Views"
-          textStyles="small-medium text-dark400_light800"
-        />
+        <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            imgUrl="/assets/icons/like.svg"
+            alt="upvotes"
+            value={formatAndDivideNumber(upvotes)}
+            title=" Votes"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/message.svg"
+            alt="message"
+            value={formatAndDivideNumber(answers.length)}
+            title=" Answers"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/eye.svg"
+            alt="eye"
+            value={formatAndDivideNumber(views)}
+            title=" Views"
+            textStyles="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );

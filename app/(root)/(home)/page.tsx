@@ -6,16 +6,45 @@ import Pagination from '@/app/components/shared/Pagination';
 import LocalSearchbar from '@/app/components/shared/search/LocalSearchbar';
 import { Button } from '@/components/ui/button';
 import { HomePageFilters } from '@/constants/filters';
-import { getQuestions } from '@/lib/actions/questions.actions';
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from '@/lib/actions/questions.actions';
 import { SearchParamsProps } from '@/types';
+import { auth } from '@clerk/nextjs';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
+export const metadata: Metadata = {
+  title: 'Home | Dev Overflow',
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const result = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams?.page ? +searchParams.page : 1,
-  });
+  const { userId } = auth();
+
+  let result;
+
+  if (searchParams?.filter === 'recommended') {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams?.page ? +searchParams.page : 1,
+    });
+  }
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row">
@@ -51,7 +80,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
               title={question.title}
               tags={question.tags}
               author={question.author}
-              upvotes={question.upvotes}
+              upvotes={question.upvotes.length}
               views={question.views}
               answers={question.answers}
               createdAt={question.createdAt}
