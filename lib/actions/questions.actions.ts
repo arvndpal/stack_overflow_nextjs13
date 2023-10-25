@@ -46,6 +46,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         query.answers = { $size: 0 };
         break;
       default:
+        sortOptions = { createdAt: -1 };
         break;
     }
     const questions = await Question.find(query)
@@ -75,7 +76,6 @@ export async function createQuestion(params: CreateQuestionParams) {
       content,
       author,
     });
-
     const tagDocuments = [];
 
     // Create the tags or get them if they already exist
