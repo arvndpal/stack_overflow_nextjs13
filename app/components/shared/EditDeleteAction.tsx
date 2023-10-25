@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteQuestion } from '@/lib/actions/questions.actions';
-import { Delete } from 'lucide-react';
 import { deleteAnswer } from '@/lib/actions/answer.action';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
