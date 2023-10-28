@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { createAnswer } from '@/lib/actions/answer.action';
 import { usePathname } from 'next/navigation';
+import { toast } from '@/components/ui/use-toast';
 interface Props {
   question: string;
   questionId: string;
@@ -50,7 +51,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   };
 
   const generateAIAnswer = async () => {
-    if (!authorId) return;
+    if (!authorId) {
+      return toast({
+        title: 'Please log in',
+        description: 'You must be logged in to perform this action',
+      });
+    }
 
     setIsSubmittingAI(true);
 

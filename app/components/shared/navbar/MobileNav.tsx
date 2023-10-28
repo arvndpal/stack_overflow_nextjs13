@@ -8,15 +8,24 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import Link from 'next/link';
-import { SignedOut } from '@clerk/nextjs';
+import { SignedOut, useAuth } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { sidebarLinks } from '@/constants';
 import { usePathname } from 'next/navigation';
 const NavContent = () => {
   const pathname = usePathname();
+
+  const { userId } = useAuth();
+  let updatedSidebarLinks = sidebarLinks;
+  if (!userId) {
+    updatedSidebarLinks = sidebarLinks.filter(
+      (link) => link.route !== '/profile'
+    );
+  }
+
   return (
     <section className="flex h-full flex-col gap-6 pt-6">
-      {sidebarLinks.map((item) => {
+      {updatedSidebarLinks.map((item) => {
         const isActive =
           (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
@@ -28,7 +37,7 @@ const NavContent = () => {
                 isActive
                   ? 'primary-gradient rounded-lg text-light-900'
                   : 'text-dark300_light900'
-              } flex items-center justify-start gap-4 bg-transparent p-4`}
+              } hover:background-light800_dark400 flex items-center justify-start gap-4 bg-transparent p-4 hover:rounded-lg`}
             >
               <Image
                 src={item.imgURL}
@@ -82,7 +91,7 @@ const MobileNav = () => {
             <NavContent />
           </SheetClose>
           <SignedOut>
-            <div className="flex flex-col gap-3">
+            <div className="mt-10 flex flex-col gap-3">
               <SheetClose asChild>
                 <Link href={'/sign-in'}>
                   <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
